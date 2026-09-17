@@ -9,25 +9,7 @@ class RentCastError(RuntimeError):
     pass
 
 
-def fetch_sale_listings(config):
-    load_dotenv()
-    key = os.getenv("RENTCAST_API_KEY", "").strip()
-    if not key:
-        raise RentCastError(
-            "No RentCast API key was found. Double-click Run House Hack.command again "
-            "and paste your key when asked."
-        )
-
-    m = config["market"]
-    params = {
-        "city": m["city"],
-        "state": m["state"],
-        "propertyType": m["property_type"],
-        "bedrooms": f'{m["min_bedrooms"]}:{m["max_bedrooms"]}',
-        "price": f'{m["min_list_price"]}:{m["max_list_price"]}',
-        "limit": 500,
-    }
-
+def _get_sale_listings(key, params):
     try:
         r = requests.get(
             SALE_URL,
@@ -73,12 +55,60 @@ def fetch_sale_listings(config):
     return r.json()
 
 
+def fetch_sale_listings(config):
+    load_dotenv()
+    key = os.getenv("RENTCAST_API_KEY", "").strip()
+    if not key:
+        raise RentCastError(
+            "No RentCast API key was found. Double-click Run House Hack.command again "
+            "and paste your key when asked."
+        )
+
+    m = config["market"]
+    search = config.get("search", {})
+    common = {
+        "state": m["state"],
+        "propertyType": m["property_type"],
+        "status": m["status"],
+        "bedrooms": f'{m["min_bedrooms"]}:{m["max_bedrooms"]}',
+        "price": f'{m["min_list_price"]}:{m["max_list_price"]}',
+        "limit": 500,
+    }
+
+    queries = []
+    shein_address = search.get("shein_address")
+    shein_radius = search.get("shein_radius_miles")
+    if shein_address and shein_radius:
+        queries.append(("SHEIN radius", {**common, "address": shein_address, "radius": shein_radius}))
+    else:
+        queries.append((m["city"], {**common, "city": m["city"]}))
+
+    for city in search.get("include_cities", []):
+        queries.append((city, {**common, "city": city}))
+
+    deduped = {}
+    for source, params in queries:
+        for item in _get_sale_listings(key, params):
+            item = dict(item)
+            item["_search_source"] = source
+            listing_id = item.get("id") or item.get("mlsNumber") or item.get("formattedAddress", "")
+            if listing_id not in deduped:
+                deduped[listing_id] = item
+            elif source not in deduped[listing_id].get("_search_source", ""):
+                deduped[listing_id]["_search_source"] += f" + {source}"
+
+    return list(deduped.values())
+
+
 def normalize_listing(item):
     hoa = item.get("hoa") or {}
     return {
         "listing_id": item.get("id") or item.get("mlsNumber") or item.get("formattedAddress", ""),
         "status": item.get("status", ""),
         "address": item.get("formattedAddress", ""),
+        "city": item.get("city", ""),
+        "zip_code": item.get("zipCode", ""),
+        "search_source": item.get("_search_source", ""),
         "price": item.get("price") or 0,
         "bedrooms": item.get("bedrooms") or 0,
         "bathrooms": item.get("bathrooms") or 0,
