@@ -8,6 +8,32 @@ echo " Whitestown House-Hack Radar"
 echo "======================================"
 echo
 
+# Keep downloaded ZIP copies current without touching the user's API key,
+# virtual environment, saved listing history, or generated reports.
+if command -v curl >/dev/null 2>&1 && command -v unzip >/dev/null 2>&1; then
+  echo "Checking for the latest model from GitHub..."
+  TMP_DIR=$(mktemp -d)
+  if curl -fsSL "https://github.com/Becky0713/whitestown-househack/archive/refs/heads/main.zip" -o "$TMP_DIR/repo.zip" \
+     && unzip -q "$TMP_DIR/repo.zip" -d "$TMP_DIR"; then
+    LATEST="$TMP_DIR/whitestown-househack-main"
+    if [ -d "$LATEST/src" ] && [ -d "$LATEST/config" ]; then
+      rm -rf src config
+      cp -R "$LATEST/src" ./src
+      cp -R "$LATEST/config" ./config
+      cp "$LATEST/requirements.txt" ./requirements.txt
+      cp "$LATEST/README.md" ./README.md 2>/dev/null || true
+      cp "$LATEST/.env.example" ./.env.example 2>/dev/null || true
+      cp "$LATEST/Run House Hack.command" "./Run House Hack.command" 2>/dev/null || true
+      chmod +x "./Run House Hack.command" 2>/dev/null || true
+      echo "Latest model loaded."
+    fi
+  else
+    echo "Could not check GitHub right now; using the local copy."
+  fi
+  rm -rf "$TMP_DIR"
+fi
+
+echo
 if ! command -v python3 >/dev/null 2>&1; then
   echo "Python 3 is not installed. Please install Python 3 first, then run this file again."
   echo
