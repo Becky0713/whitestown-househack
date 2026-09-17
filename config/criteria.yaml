@@ -46,7 +46,7 @@ monthly_costs:
   homeowners_insurance_monthly: 130
   pmi_annual_pct_of_loan: 0.006
   maintenance_reserve_annual_pct_of_price: 0.010
-  utilities_paid_by_owner_monthly: 100
+  utilities_paid_by_owner_monthly: 0
   hoa_default_monthly: 0
 
 house_hack:
