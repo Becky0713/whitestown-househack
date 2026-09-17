@@ -35,8 +35,20 @@ def main():
         deal["verdict"] = verdict(deal, cfg)
         deals.append(deal)
 
-    verdict_order = {"INVESTIGATE": 0, "WATCH / NEGOTIATE": 1, "REJECT": 2}
-    deals.sort(key=lambda x: (verdict_order.get(x["verdict"], 9), -x["score"], x["owner_monthly_cost"], x["price"]))
+    verdict_order = {
+        "PRIORITY": 0,
+        "INVESTIGATE": 1,
+        "3BR VALUE OPTION": 2,
+        "WATCH / NEGOTIATE": 3,
+        "REJECT": 4,
+    }
+    deals.sort(key=lambda x: (
+        verdict_order.get(x["verdict"], 9),
+        -x["score"],
+        x["mortgage_pi_plus_tax"],
+        x["owner_monthly_cost"],
+        x["price"],
+    ))
 
     out = ROOT / "reports" / "shortlist.csv"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -51,7 +63,10 @@ def main():
     summary = ROOT / "reports" / "latest_summary.txt"
     lines = [
         f"Listings passing basic filters: {len(deals)}",
-        f"Target owner cost: <= ${float(cfg['financing']['target_owner_monthly_cost']):,.0f}/mo",
+        f"Priority: 4BR; 3BR kept only as value backups",
+        f"Ideal P&I + property tax: <= ${float(cfg['financing']['ideal_pi_plus_tax_monthly']):,.0f}/mo",
+        f"Maximum P&I + property tax: <= ${float(cfg['financing']['max_pi_plus_tax_monthly']):,.0f}/mo",
+        f"Target owner cost after room rent: <= ${float(cfg['financing']['target_owner_monthly_cost']):,.0f}/mo",
         f"Cash available: ${float(cfg['financing']['available_cash']):,.0f}",
         f"Down payment: {float(cfg['financing']['down_payment_pct'])*100:.0f}%",
         f"Snapshot: {snapshot}",
@@ -61,8 +76,8 @@ def main():
     ]
     for d in deals[:15]:
         lines.append(
-            f'{d["verdict"]:<18} | {d["score"]:>3} | ${float(d["price"]):,.0f} | {d["bedrooms"]}BR | '
-            f'owner ${float(d["owner_monthly_cost"]):,.0f}/mo | max price for $800 target ${float(d["max_price_for_target_owner_cost"]):,.0f} | '
+            f'{d["verdict"]:<18} | {d["score"]:>3} | ${float(d["price"]):,.0f} | {d["bedrooms"]}BR | {d["year_built"]} | '
+            f'P&I+tax ${float(d["mortgage_pi_plus_tax"]):,.0f}/mo | owner ${float(d["owner_monthly_cost"]):,.0f}/mo | '
             f'cash left ${float(d["cash_after_close"]):,.0f} | {d["address"]}'
         )
     summary.write_text("\n".join(lines), encoding="utf-8")
