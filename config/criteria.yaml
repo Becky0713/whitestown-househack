@@ -13,11 +13,18 @@ market:
   max_hoa_monthly: 75
   preferred_min_year_built: 1990
 
+search:
+  shein_address: "5400 E 500 S, Whitestown, IN, 46075"
+  shein_radius_miles: 8
+  include_cities:
+    - Zionsville
+  note: "Radius is a first-pass proxy for about a 15-minute drive; verify actual drive time for finalists."
+
 location:
   exit_130_latitude: 39.9975
   exit_130_longitude: -86.3525
   preferred_max_straight_line_miles: 5.0
-  preferred_max_drive_minutes: 10
+  preferred_max_drive_minutes: 15
 
 financing:
   annual_gross_income: 81600
