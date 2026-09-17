@@ -1,0 +1,16 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+.pytest_cache/
+
+/data/raw/*.csv
+/data/processed/*.csv
+/reports/*.csv
+/reports/*.txt
+
+!/data/raw/.gitkeep
+!/data/processed/.gitkeep
+!/reports/.gitkeep
