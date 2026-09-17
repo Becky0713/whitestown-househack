@@ -1,0 +1,72 @@
+market:
+  city: Whitestown
+  state: IN
+  property_type: Single Family
+  status: Active
+  min_list_price: 230000
+  max_list_price: 320000
+  target_max_purchase_price: 300000
+  min_bedrooms: 3
+  max_bedrooms: 4
+  preferred_bedrooms: 4
+  min_bathrooms: 2
+  max_hoa_monthly: 75
+
+location:
+  exit_130_latitude: 39.9975
+  exit_130_longitude: -86.3525
+  preferred_max_straight_line_miles: 5.0
+  preferred_max_drive_minutes: 10
+
+financing:
+  annual_gross_income: 81600
+  existing_monthly_debt: 0
+  available_cash: 30000
+  down_payment_pct: 0.05
+  mortgage_rate_pct: 7.13
+  mortgage_term_years: 30
+  lender_points_dollars: 0
+  closing_cost_pct: 0.025
+  seller_credit_dollars: 0
+  minimum_cash_reserve_after_close: 8000
+
+monthly_costs:
+  property_tax_annual_pct_of_price: 0.010
+  homeowners_insurance_monthly: 130
+  pmi_annual_pct_of_loan: 0.006
+  maintenance_reserve_annual_pct_of_price: 0.010
+  utilities_paid_by_owner_monthly: 250
+  hoa_default_monthly: 0
+
+house_hack:
+  owner_occupied_bedrooms: 1
+  default_room_rent_monthly: 700
+  vacancy_pct: 0.05
+  max_rooms_to_rent: 3
+
+scenarios:
+  bear:
+    appreciation_pct: -0.02
+    annual_rent_growth_pct: 0.00
+    vacancy_pct: 0.10
+    one_time_year_1_repair: 8000
+  base:
+    appreciation_pct: 0.00
+    annual_rent_growth_pct: 0.02
+    vacancy_pct: 0.05
+    one_time_year_1_repair: 0
+  bull:
+    appreciation_pct: 0.03
+    annual_rent_growth_pct: 0.03
+    vacancy_pct: 0.03
+    one_time_year_1_repair: 0
+
+scoring:
+  bedrooms_4_points: 20
+  price_at_or_below_target_points: 20
+  hoa_ok_points: 10
+  distance_ok_points: 10
+  cash_reserve_ok_points: 15
+  owner_cost_under_700_points: 15
+  owner_cost_under_1000_points: 5
+  base_equity_positive_points: 10
