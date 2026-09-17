@@ -47,6 +47,7 @@ def underwrite(listing, config, scenario_name="base"):
     loan = price - down
     pi = monthly_payment(loan, float(f["mortgage_rate_pct"]), int(f["mortgage_term_years"]))
     tax = price * float(c["property_tax_annual_pct_of_price"]) / 12
+    pi_plus_tax = pi + tax
     ins = float(c["homeowners_insurance_monthly"])
     pmi = 0 if float(f["down_payment_pct"]) >= .20 else loan * float(c["pmi_annual_pct_of_loan"]) / 12
     maint = price * float(c["maintenance_reserve_annual_pct_of_price"]) / 12
@@ -71,8 +72,8 @@ def underwrite(listing, config, scenario_name="base"):
 
     return {**listing,
         "scenario": scenario_name, "down_payment": round(down,2), "loan_amount": round(loan,2),
-        "mortgage_pi": round(pi,2), "property_tax_est": round(tax,2), "insurance_est": round(ins,2),
-        "pmi_est": round(pmi,2), "maintenance_reserve": round(maint,2), "utilities_est": round(util,2),
+        "mortgage_pi": round(pi,2), "property_tax_est": round(tax,2), "mortgage_pi_plus_tax": round(pi_plus_tax,2),
+        "insurance_est": round(ins,2), "pmi_est": round(pmi,2), "maintenance_reserve": round(maint,2), "utilities_est": round(util,2),
         "all_in_monthly_cost": round(all_in,2), "rooms_rented": rooms, "effective_room_rent": round(eff_rent,2),
         "owner_monthly_cost": round(owner_cost,2), "target_owner_monthly_cost": round(float(f["target_owner_monthly_cost"]),2),
         "max_price_for_target_owner_cost": max_target_price, "discount_needed_for_target": round(discount_needed,2),
