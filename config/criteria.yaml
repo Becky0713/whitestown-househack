@@ -4,13 +4,14 @@ market:
   property_type: Single Family
   status: Active
   min_list_price: 230000
-  max_list_price: 320000
-  target_max_purchase_price: 300000
-  min_bedrooms: 3
-  max_bedrooms: 4
+  max_list_price: 350000
+  target_max_purchase_price: 320000
+  min_bedrooms: 4
+  max_bedrooms: 5
   preferred_bedrooms: 4
   min_bathrooms: 2
   max_hoa_monthly: 75
+  preferred_min_year_built: 1980
 
 location:
   exit_130_latitude: 39.9975
@@ -21,21 +22,22 @@ location:
 financing:
   annual_gross_income: 81600
   existing_monthly_debt: 0
-  available_cash: 30000
+  available_cash: 50000
   down_payment_pct: 0.05
   mortgage_rate_pct: 7.13
   mortgage_term_years: 30
   lender_points_dollars: 0
   closing_cost_pct: 0.025
   seller_credit_dollars: 0
-  minimum_cash_reserve_after_close: 8000
+  minimum_cash_reserve_after_close: 12000
+  target_owner_monthly_cost: 800
 
 monthly_costs:
   property_tax_annual_pct_of_price: 0.010
   homeowners_insurance_monthly: 130
   pmi_annual_pct_of_loan: 0.006
   maintenance_reserve_annual_pct_of_price: 0.010
-  utilities_paid_by_owner_monthly: 250
+  utilities_paid_by_owner_monthly: 100
   hoa_default_monthly: 0
 
 house_hack:
@@ -63,10 +65,16 @@ scenarios:
 
 scoring:
   bedrooms_4_points: 20
-  price_at_or_below_target_points: 20
+  price_at_or_below_target_points: 10
   hoa_ok_points: 10
-  distance_ok_points: 10
-  cash_reserve_ok_points: 15
-  owner_cost_under_700_points: 15
-  owner_cost_under_1000_points: 5
-  base_equity_positive_points: 10
+  distance_ok_points: 5
+  cash_reserve_ok_points: 20
+  owner_cost_at_or_below_target_points: 30
+  base_equity_positive_points: 5
+  year_2000_plus_points: 10
+  year_1980_1999_points: 5
+  pre_1950_penalty: 15
+  year_1950_1979_penalty: 5
+  hoa_over_limit_penalty: 15
+  cash_reserve_short_penalty: 20
+  owner_cost_over_target_penalty: 30
