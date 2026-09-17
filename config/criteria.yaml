@@ -3,15 +3,15 @@ market:
   state: IN
   property_type: Single Family
   status: Active
-  min_list_price: 230000
+  min_list_price: 220000
   max_list_price: 350000
   target_max_purchase_price: 320000
-  min_bedrooms: 4
-  max_bedrooms: 5
+  min_bedrooms: 3
+  max_bedrooms: 4
   preferred_bedrooms: 4
   min_bathrooms: 2
   max_hoa_monthly: 75
-  preferred_min_year_built: 1980
+  preferred_min_year_built: 1990
 
 location:
   exit_130_latitude: 39.9975
@@ -31,6 +31,8 @@ financing:
   seller_credit_dollars: 0
   minimum_cash_reserve_after_close: 12000
   target_owner_monthly_cost: 800
+  ideal_pi_plus_tax_monthly: 2100
+  max_pi_plus_tax_monthly: 3000
 
 monthly_costs:
   property_tax_annual_pct_of_price: 0.010
@@ -64,17 +66,21 @@ scenarios:
     one_time_year_1_repair: 0
 
 scoring:
-  bedrooms_4_points: 20
-  price_at_or_below_target_points: 10
-  hoa_ok_points: 10
+  bedrooms_4_points: 25
+  price_at_or_below_target_points: 5
+  hoa_ok_points: 5
   distance_ok_points: 5
-  cash_reserve_ok_points: 20
-  owner_cost_at_or_below_target_points: 30
+  cash_reserve_ok_points: 15
+  owner_cost_at_or_below_target_points: 20
+  owner_cost_over_target_penalty: 15
   base_equity_positive_points: 5
-  year_2000_plus_points: 10
-  year_1980_1999_points: 5
-  pre_1950_penalty: 15
-  year_1950_1979_penalty: 5
-  hoa_over_limit_penalty: 15
+  pi_plus_tax_ideal_points: 30
+  pi_plus_tax_under_max_points: 10
+  pi_plus_tax_over_max_penalty: 40
+  year_2000_plus_points: 15
+  year_1990_1999_points: 10
+  year_1980_1989_points: 3
+  pre_1980_penalty: 15
+  pre_1950_penalty: 30
+  hoa_over_limit_penalty: 10
   cash_reserve_short_penalty: 20
-  owner_cost_over_target_penalty: 30
